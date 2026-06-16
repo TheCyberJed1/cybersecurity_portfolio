@@ -1,0 +1,23 @@
+# Scan output / artifacts
+scans/
+*.nmap
+*.gnmap
+*.xml
+
+# Sensitive captures — never commit real creds/PII
+*.pcap
+*.cap
+loot/
+creds/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

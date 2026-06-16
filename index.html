@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cybersecurity &amp; Networking Portfolio</title>
+<meta name="description" content="Hands-on networking and security labs: CCNA networking, Active Directory attack simulation, and Python security automation." />
+<style>
+  :root {
+    --bg: #0a0e14;
+    --bg-soft: #111722;
+    --bg-card: #141b27;
+    --bg-card-hover: #1a2433;
+    --border: #233044;
+    --border-glow: #2dd4bf;
+    --text: #e6edf3;
+    --text-dim: #9aa7b8;
+    --text-faint: #6b7a8d;
+    --accent: #2dd4bf;
+    --accent-2: #38bdf8;
+    --accent-red: #f87171;
+    --accent-amber: #fbbf24;
+    --mono: "SFMono-Regular", "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono", Menlo, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --radius: 12px;
+    --maxw: 1080px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(900px 500px at 80% -10%, rgba(45, 212, 191, 0.10), transparent),
+      radial-gradient(700px 400px at 0% 10%, rgba(56, 189, 248, 0.08), transparent);
+  }
+
+  a { color: var(--accent-2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Nav ---------- */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(10px);
+    background: rgba(10, 14, 20, 0.78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px; max-width: var(--maxw); margin: 0 auto; padding: 0 24px;
+  }
+  .brand { font-family: var(--mono); font-weight: 700; color: var(--text); letter-spacing: .5px; }
+  .brand span { color: var(--accent); }
+  .nav-links { display: flex; gap: 22px; }
+  .nav-links a { color: var(--text-dim); font-size: 14px; font-weight: 500; }
+  .nav-links a:hover { color: var(--accent); text-decoration: none; }
+  @media (max-width: 680px) { .nav-links { display: none; } }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 84px 0 56px; }
+  .terminal-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 13px; color: var(--accent);
+    background: rgba(45, 212, 191, 0.08);
+    border: 1px solid rgba(45, 212, 191, 0.25);
+    padding: 6px 12px; border-radius: 999px; margin-bottom: 22px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.1; font-weight: 800;
+    letter-spacing: -0.02em; margin-bottom: 18px;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p.lead { font-size: 1.12rem; color: var(--text-dim); max-width: 680px; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px; border-radius: 10px; font-weight: 600; font-size: 14px;
+    border: 1px solid var(--border); transition: all .18s ease;
+  }
+  .btn-primary { background: var(--accent); color: #04241f; border-color: var(--accent); }
+  .btn-primary:hover { background: #5ee9d8; text-decoration: none; transform: translateY(-1px); }
+  .btn-ghost { color: var(--text); background: var(--bg-card); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+  /* ---------- Section ---------- */
+  section { padding: 50px 0; }
+  .sec-head { margin-bottom: 32px; }
+  .sec-eyebrow { font-family: var(--mono); font-size: 13px; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
+  .sec-head h2 { font-size: 1.7rem; font-weight: 700; margin-top: 8px; letter-spacing: -0.01em; }
+  .sec-head p { color: var(--text-dim); margin-top: 8px; max-width: 720px; }
+
+  /* ---------- Skills ---------- */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  .skill-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px;
+  }
+  .skill-card h3 { font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .skill-card h3 .ic { color: var(--accent); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: var(--mono); font-size: 12px; color: var(--text-dim);
+    background: var(--bg-soft); border: 1px solid var(--border);
+    padding: 4px 10px; border-radius: 6px;
+  }
+
+  /* ---------- Projects ---------- */
+  .proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; }
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px; position: relative;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    display: flex; flex-direction: column;
+  }
+  .card:hover {
+    transform: translateY(-4px); border-color: rgba(45, 212, 191, 0.45);
+    box-shadow: 0 12px 30px -12px rgba(0,0,0,0.6);
+  }
+  .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .badge {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    padding: 4px 9px; border-radius: 6px; letter-spacing: .4px;
+  }
+  .badge.net { color: var(--accent-2); background: rgba(56,189,248,.1); border: 1px solid rgba(56,189,248,.3); }
+  .badge.sec { color: var(--accent-red); background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.3); }
+  .badge.auto { color: var(--accent-amber); background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.3); }
+  .card-num { font-family: var(--mono); font-size: 12px; color: var(--text-faint); }
+  .card h3 { font-size: 1.08rem; line-height: 1.35; margin-bottom: 10px; }
+  .card .obj { color: var(--text-dim); font-size: 14px; margin-bottom: 16px; flex-grow: 1; }
+  .card .meta { font-family: var(--mono); font-size: 12px; color: var(--text-faint); margin-bottom: 4px; }
+  .card .meta b { color: var(--text-dim); font-weight: 600; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .tag-row .chip { font-size: 11px; }
+
+  /* ---------- Lab template / details ---------- */
+  details.lab {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); margin-bottom: 12px; overflow: hidden;
+  }
+  details.lab summary {
+    cursor: pointer; padding: 16px 20px; font-weight: 600; list-style: none;
+    display: flex; align-items: center; gap: 12px; user-select: none;
+  }
+  details.lab summary::-webkit-details-marker { display: none; }
+  details.lab summary .arrow { color: var(--accent); transition: transform .2s ease; font-family: var(--mono); }
+  details.lab[open] summary .arrow { transform: rotate(90deg); }
+  details.lab summary .lab-id { font-family: var(--mono); font-size: 12px; color: var(--text-faint); }
+  .lab-body { padding: 4px 20px 22px 48px; }
+  .lab-body h4 { font-size: 13px; text-transform: uppercase; letter-spacing: .6px; color: var(--accent); margin: 16px 0 6px; font-family: var(--mono); }
+  .lab-body ul, .lab-body ol { margin-left: 18px; color: var(--text-dim); font-size: 14px; }
+  .lab-body p { color: var(--text-dim); font-size: 14px; }
+
+  /* ---------- Repo structure ---------- */
+  .codeblock {
+    background: var(--bg-soft); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+  }
+  .codeblock-head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.02);
+  }
+  .traffic { width: 12px; height: 12px; border-radius: 50%; }
+  .traffic.r { background: #ff5f56; } .traffic.y { background: #ffbd2e; } .traffic.g { background: #27c93f; }
+  .codeblock-head .fname { margin-left: 8px; font-family: var(--mono); font-size: 12px; color: var(--text-faint); }
+  pre {
+    font-family: var(--mono); font-size: 13px; color: var(--text-dim);
+    padding: 18px 20px; overflow-x: auto; line-height: 1.55;
+  }
+  pre .c-dir { color: var(--accent-2); }
+  pre .c-com { color: var(--text-faint); }
+
+  /* ---------- Contact ---------- */
+  .contact-card {
+    background: linear-gradient(135deg, var(--bg-card), var(--bg-soft));
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 40px; text-align: center;
+  }
+  .contact-card h2 { font-size: 1.6rem; margin-bottom: 10px; }
+  .contact-card p { color: var(--text-dim); max-width: 540px; margin: 0 auto 24px; }
+  .contact-links { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+
+  /* ---------- Footer ---------- */
+  footer.site { border-top: 1px solid var(--border); padding: 28px 0; margin-top: 30px; }
+  footer.site .wrap { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
+  footer.site p { color: var(--text-faint); font-size: 13px; font-family: var(--mono); }
+
+  .takeaway {
+    border-left: 3px solid var(--accent); background: rgba(45,212,191,.05);
+    padding: 18px 22px; border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--text-dim); font-size: 15px;
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">&gt;_ sec<span>portfolio</span></div>
+    <nav class="nav-links">
+      <a href="#skills">Skills</a>
+      <a href="#networking">Networking</a>
+      <a href="#security">Security</a>
+      <a href="#automation">Automation</a>
+      <a href="#structure">Repo</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="wrap">
+    <div class="terminal-tag"><span class="dot"></span> available for junior network / security roles</div>
+    <h1>Cybersecurity &amp; <span class="grad">Networking</span> Portfolio</h1>
+    <p class="lead">
+      Hands-on labs that simulate production-like environments — enterprise network design,
+      Active Directory attack simulation, and Python security automation. Built to demonstrate
+      I can <strong>design and explain enterprise networks</strong>, not just study them.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#networking">▸ View Projects</a>
+      <a class="btn btn-ghost" href="#contact">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SKILLS ===================== -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">// core competencies</div>
+      <h2>Skills Demonstrated</h2>
+      <p>Each skill below is backed by a documented lab in this repository — topology, configs, testing, and mitigation.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h3><span class="ic">◆</span> Networking</h3>
+        <div class="chips">
+          <span class="chip">VLAN segmentation</span>
+          <span class="chip">Trunking / 802.1Q</span>
+          <span class="chip">Inter-VLAN routing</span>
+          <span class="chip">OSPF</span>
+          <span class="chip">NAT / PAT</span>
+          <span class="chip">Subnetting</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3><span class="ic">◆</span> Security</h3>
+        <div class="chips">
+          <span class="chip">ACL policy design</span>
+          <span class="chip">AD attack chains</span>
+          <span class="chip">Kerberoasting</span>
+          <span class="chip">Lateral movement</span>
+          <span class="chip">Enumeration</span>
+          <span class="chip">Pen-testing fundamentals</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3><span class="ic">◆</span> Tooling &amp; Automation</h3>
+        <div class="chips">
+          <span class="chip">Python</span>
+          <span class="chip">Nmap</span>
+          <span class="chip">Wireshark</span>
+          <span class="chip">Kali Linux</span>
+          <span class="chip">Packet Tracer</span>
+          <span class="chip">Log parsing</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3><span class="ic">◆</span> Methodology</h3>
+        <div class="chips">
+          <span class="chip">Layered diagnostics</span>
+          <span class="chip">Troubleshooting</span>
+          <span class="chip">Attack + defense modeling</span>
+          <span class="chip">Technical documentation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== NETWORKING PROJECTS ===================== -->
+<section id="networking">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">// ccna-networking</div>
+      <h2>CCNA Networking Labs</h2>
+      <p>Every CCNA topic rebuilt as an enterprise-style project — not a lesson. Designed, configured, tested, and documented.</p>
+    </div>
+
+    <div class="proj-grid">
+
+      <div class="card">
+        <div class="card-top"><span class="badge net">NETWORK</span><span class="card-num">lab-01</span></div>
+        <h3>Enterprise Network Segmentation Using VLAN Architecture</h3>
+        <p class="obj">Three isolated departments — HR, IT, and Guest — segmented with VLANs and connected via router-on-a-stick. Demonstrates network-segmentation thinking and basic enterprise design.</p>
+        <div class="meta"><b>Builds:</b> VLAN isolation · switchport config · trunking</div>
+        <div class="meta"><b>Validates:</b> inter-VLAN reachability + isolation</div>
+        <div class="tag-row"><span class="chip">VLANs</span><span class="chip">802.1Q</span><span class="chip">Packet Tracer</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-top"><span class="badge net">NETWORK</span><span class="card-num">lab-02</span></div>
+        <h3>Multi-Segment Enterprise Routing Architecture</h3>
+        <p class="obj">Inter-VLAN routing via router-on-a-stick with dot1Q subinterfaces and encapsulation. Includes traffic-isolation tests showing intended ping success and failure paths.</p>
+        <div class="meta"><b>Builds:</b> subinterfaces · dot1Q encapsulation</div>
+        <div class="meta"><b>Validates:</b> routing + traffic isolation tests</div>
+        <div class="tag-row"><span class="chip">Subinterfaces</span><span class="chip">Routing</span><span class="chip">Isolation</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-top"><span class="badge net">NETWORK</span><span class="card-num">lab-03</span></div>
+        <h3>Dynamic Routing Design Using OSPF for Enterprise Scalability</h3>
+        <p class="obj">Three-router topology with multiple LANs running OSPF, including adjacency verification. A high-signal skill for junior network roles.</p>
+        <div class="meta"><b>Builds:</b> 3 routers · multi-LAN · OSPF areas</div>
+        <div class="meta"><b>Validates:</b> neighbor adjacency + route tables</div>
+        <div class="tag-row"><span class="chip">OSPF</span><span class="chip">Adjacency</span><span class="chip">Scalability</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-top"><span class="badge net">SECURITY</span><span class="card-num">lab-04</span></div>
+        <h3>Network Access Control Policy Implementation Using ACLs</h3>
+        <p class="obj">Standard and extended ACLs blocking departments from a sensitive subnet while permitting selective services (HTTP, SSH). Includes a security-policy mapping section.</p>
+        <div class="meta"><b>Builds:</b> standard + extended ACLs</div>
+        <div class="meta"><b>Validates:</b> deny/permit matrix vs. policy</div>
+        <div class="tag-row"><span class="chip">ACLs</span><span class="chip">Policy mapping</span><span class="chip">HTTP/SSH</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-top"><span class="badge net">NETWORK</span><span class="card-num">lab-05</span></div>
+        <h3>Enterprise Internet Gateway with NAT/PAT Address Translation</h3>
+        <p class="obj">Inside private network translated to a simulated ISP edge using PAT overload. Demonstrates real-world internet-edge behavior and address conservation.</p>
+        <div class="meta"><b>Builds:</b> inside/outside · PAT overload</div>
+        <div class="meta"><b>Validates:</b> translation table + connectivity</div>
+        <div class="tag-row"><span class="chip">NAT</span><span class="chip">PAT</span><span class="chip">Internet edge</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-top"><span class="badge net">NETWORK</span><span class="card-num">lab-06</span></div>
+        <h3>Structured Network Troubleshooting Methodology Using Layered Diagnostics</h3>
+        <p class="obj">Faults injected intentionally — wrong subnet masks, broken routes, disabled interfaces — then diagnosed with a layered methodology using ping, traceroute, and show commands.</p>
+        <div class="meta"><b>Builds:</b> intentional fault injection</div>
+        <div class="meta"><b>Validates:</b> documented diagnosis steps</div>
+        <div class="tag-row"><span class="chip">Troubleshooting</span><span class="chip">traceroute</span><span class="chip">show cmds</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECURITY PROJECTS ===================== -->
+<section id="security">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">// security-labs</div>
+      <h2>Security Labs — High Impact</h2>
+      <p>Offensive simulations that show attack + defense thinking: enumeration, escalation paths, and concrete mitigations.</p>
+    </div>
+
+    <div class="proj-grid">
+      <div class="card">
+        <div class="card-top"><span class="badge sec">RED TEAM</span><span class="card-num">ad-lab</span></div>
+        <h3>Enterprise Active Directory Attack Simulation — Kerberoasting + Lateral Movement</h3>
+        <p class="obj">Full attack chain in a lab AD environment: enumeration → Kerberoasting → privilege-escalation path → lateral movement. Documented end-to-end with defensive mitigations for each stage.</p>
+        <div class="meta"><b>Shows:</b> enumeration · esc path · lateral movement</div>
+        <div class="meta"><b>Defense:</b> mitigation mapped to each step</div>
+        <div class="tag-row"><span class="chip">Active Directory</span><span class="chip">Kerberoasting</span><span class="chip">Kali</span><span class="chip">Mitigations</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-top"><span class="badge auto">PIPELINE</span><span class="card-num">recon</span></div>
+        <h3>Automated Network Reconnaissance Workflow Using Nmap and Python Parsing</h3>
+        <p class="obj">Scan automation that drives Nmap, parses raw output with Python, and produces a structured report. Demonstrates security automation and a repeatable recon process.</p>
+        <div class="meta"><b>Shows:</b> scan automation · output parsing</div>
+        <div class="meta"><b>Output:</b> structured reporting format</div>
+        <div class="tag-row"><span class="chip">Python</span><span class="chip">Nmap</span><span class="chip">Parsing</span><span class="chip">Reporting</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-top"><span class="badge sec">WEB</span><span class="card-num">web-app</span></div>
+        <h3>Web Application Vulnerability Testing Workflows</h3>
+        <p class="obj">Structured web-app testing workflow covering enumeration, common vulnerability classes, and a documented methodology for repeatable assessment.</p>
+        <div class="meta"><b>Shows:</b> enumeration · testing workflow</div>
+        <div class="meta"><b>Focus:</b> repeatable methodology</div>
+        <div class="tag-row"><span class="chip">Web testing</span><span class="chip">Enumeration</span><span class="chip">OWASP-style</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AUTOMATION SCRIPTS ===================== -->
+<section id="automation">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">// scripts</div>
+      <h2>Security Automation</h2>
+      <p>Small, focused Python utilities that turn manual security tasks into repeatable pipelines.</p>
+    </div>
+    <div class="proj-grid">
+      <div class="card">
+        <div class="card-top"><span class="badge auto">PYTHON</span><span class="card-num">script</span></div>
+        <h3>nmap-automation.py</h3>
+        <p class="obj">Wraps Nmap scans with consistent options, runs them across target ranges, and hands output to the parser for reporting.</p>
+        <div class="tag-row"><span class="chip">Automation</span><span class="chip">Nmap</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="badge auto">PYTHON</span><span class="card-num">script</span></div>
+        <h3>log-parser.py</h3>
+        <p class="obj">Parses scan and log output into structured, filterable data — the basis for clean reporting and triage.</p>
+        <div class="tag-row"><span class="chip">Parsing</span><span class="chip">Reporting</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="badge auto">TOOLKIT</span><span class="card-num">dir</span></div>
+        <h3>recon-tools/</h3>
+        <p class="obj">A growing collection of reconnaissance helpers used to stitch enumeration steps into a single workflow.</p>
+        <div class="tag-row"><span class="chip">Recon</span><span class="chip">Tooling</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LAB TEMPLATE ===================== -->
+<section id="template">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">// documentation standard</div>
+      <h2>Every Lab Is Documented the Same Way</h2>
+      <p>Consistent write-ups signal that I can document technical systems the way an enterprise expects. Expand to see the structure.</p>
+    </div>
+
+    <details class="lab" open>
+      <summary><span class="arrow">▸</span> Lab Documentation Template <span class="lab-id">writeups/lab-template.md</span></summary>
+      <div class="lab-body">
+        <h4>Objective</h4>
+        <p>What real-world system is being simulated?</p>
+        <h4>Topology</h4>
+        <p>Network diagram / attack-chain image.</p>
+        <h4>Tools Used</h4>
+        <ul><li>Packet Tracer / VMware</li><li>Wireshark</li><li>Nmap</li><li>Linux CLI tools</li></ul>
+        <h4>Implementation Steps</h4>
+        <ol><li>Step 1</li><li>Step 2</li><li>Step 3</li></ol>
+        <h4>Observations</h4>
+        <p>What worked, what broke, what had to be debugged.</p>
+        <h4>Security / Networking Concepts</h4>
+        <ul><li>VLANs · routing protocols · access control · packet-flow analysis</li></ul>
+        <h4>Real-World Application</h4>
+        <p>Where this appears in enterprise environments.</p>
+        <h4>Mitigation / Improvements</h4>
+        <p>How to secure or optimize this in production.</p>
+        <h4>Evidence</h4>
+        <p>Screenshots, configs, command outputs.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ===================== REPO STRUCTURE ===================== -->
+<section id="structure">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-eyebrow">// repository</div>
+      <h2>Repository Structure</h2>
+      <p>Organized so a recruiter or engineer can navigate it in seconds.</p>
+    </div>
+    <div class="codeblock">
+      <div class="codeblock-head">
+        <span class="traffic r"></span><span class="traffic y"></span><span class="traffic g"></span>
+        <span class="fname">cybersecurity-portfolio/</span>
+      </div>
+<pre>
+cybersecurity-portfolio/
+├── README.md
+├── index.html              <span class="c-com"># this portfolio website</span>
+│
+├── <span class="c-dir">ccna-networking/</span>
+│   ├── lab-01-vlans/
+│   ├── lab-02-inter-vlan-routing/
+│   ├── lab-03-ospf-routing/
+│   ├── lab-04-acls-security/
+│   ├── lab-05-nat-pat/
+│   └── lab-06-troubleshooting/
+│
+├── <span class="c-dir">security-labs/</span>
+│   ├── active-directory/
+│   ├── kali-pentesting/
+│   ├── web-app-testing/
+│   └── enumeration/
+│
+├── <span class="c-dir">diagrams/</span>
+│   ├── network-topologies/
+│   └── attack-chains/
+│
+├── <span class="c-dir">scripts/</span>
+│   ├── nmap-automation.py
+│   ├── log-parser.py
+│   └── recon-tools/
+│
+└── <span class="c-dir">writeups/</span>
+    ├── lab-template.md
+    ├── case-study-template.md
+    └── lessons-learned.md
+</pre>
+    </div>
+
+    <div style="margin-top:28px" class="takeaway">
+      <strong>Key takeaway —</strong> each lab simulates a production-like environment, focusing on real
+      troubleshooting, attack simulation, and enterprise networking design. This is the gap between
+      <em>“I studied CCNA”</em> and <em>“I can design and explain enterprise networks.”</em>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-card">
+      <h2>Let's talk</h2>
+      <p>Open to junior network engineering, NOC, and security analyst roles. Reach out or browse the source on GitHub.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:light.security1@gmail.com">✉ Email</a>
+        <a class="btn btn-ghost" href="https://github.com/TheCyberJed1/cybersecurity_portfolio" target="_blank" rel="noopener">⌥ GitHub</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/luke-thompson-b4a0653a4/" target="_blank" rel="noopener">in LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <p>&copy; 2026 · Cybersecurity &amp; Networking Portfolio</p>
+    <p>built with html + css · no dependencies</p>
+  </div>
+</footer>
+
+</body>
+</html>
